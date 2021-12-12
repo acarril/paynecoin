@@ -1,3 +1,4 @@
+from __future__ import annotations
 from datetime import datetime, timezone
 import json
 
@@ -6,9 +7,9 @@ from paynecoin.nodes.utils import compute_hash
 class Block:
     def __init__(self,
             transaction_data:dict,
-            previous_block=None,
+            previous_block:Block=None,
             timestamp:str=None
-        ) -> None:
+        ) -> Block:
         self.transaction_data = transaction_data
         self.previous_block = previous_block
         self.timestamp = timestamp if timestamp else str(datetime.now(timezone.utc))
