@@ -16,21 +16,21 @@ class Node:
 def compute_tree_depth(n_leaves:int) -> int:
     return math.ceil(math.log2(n_leaves))
 
-def fill_set(list_of_nodes: list):
-    current_number_of_leaves = len(list_of_nodes)
-    if math.log2(current_number_of_leaves).is_integer():
-        return list_of_nodes
-    total_number_of_leaves = 2**compute_tree_depth(current_number_of_leaves)
-    if current_number_of_leaves % 2 == 0:
-        for i in range(current_number_of_leaves, total_number_of_leaves, 2):
-            list_of_nodes = list_of_nodes + [list_of_nodes[-2], list_of_nodes[-1]]
+def fill_leafs(leafs:list):
+    n_leafs = len(leafs)
+    if math.log2(n_leafs).is_integer():
+        return leafs
+    n_nodes = 2**compute_tree_depth(n_leafs)
+    if n_leafs % 2 == 0:
+        for i in range(n_leafs, n_nodes, 2):
+            leafs = leafs + [leafs[-2], leafs[-1]]
     else:
-        for i in range(current_number_of_leaves, total_number_of_leaves):
-            list_of_nodes.append(list_of_nodes[-1])
-    return list_of_nodes
+        for i in range(n_leafs, n_nodes):
+            leafs.append(leafs[-1])
+    return leafs
 
 def build_merkle_tree(node_data: List[str]) -> Node:
-    complete_set = fill_set(node_data)
+    complete_set = fill_leafs(node_data)
     old_set_of_nodes = [Node(compute_hash(data)) for data in complete_set]
     tree_depth = compute_tree_depth(len(old_set_of_nodes))
 
